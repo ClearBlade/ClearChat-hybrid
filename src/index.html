@@ -8,31 +8,35 @@
 	</head>
 	<body>
 		<div id="title">ClearChat Web
+			<div id="titleLeft" onClick="goBack()">Back</div>
 		</div>
-		<div id="login" class="hiddenView">
-			Login
-			<div><input id="userName" placeholder="name" type="text"/></div>
-			<div><button onClick="login()">Login</button></div>
-		</div>
-		<div id="groups" class="hiddenView">
-			Groups
-			<div>
-				<button onClick="createGroup()">Create Group</button>
+		<div class="content">
+			<div id="login" class="hiddenView">
+				<div class="label">UserName</div>
+				<input id="userName"  placeholder="name" type="text"/>
+				<button id="loginButton" onClick="login()">Lets chat</button>
 			</div>
-			<div>
-				<ul id="groupList">
-					
-				</ul>
+			<div id="groups" class="hiddenView">
+				<div class="info" id="welcomeMessage"></div>
+				<div class="label">Create Group</div>
+				<input type="text" class="input" placeholder="group name" id="newGroupName"/>
+				<button class="button" onClick="createGroup()">Create Group</button>
+				<div class="label">Current Groups</div>
+				<div>
+					<ul id="groupList">	
+					</ul>
+				</div>
 			</div>
-		</div>
-		<div id="chat" class="hiddenView">
-			<div id="groupTitle"></div>
-			<div id="groupChat"></div>
-			<div id="groupMessage">
-				<span>
-					<input id="message" type="text"/>
-					<button type="submit" id="sendButton"  onclick="sendChat()">Send</button>
-				</span>
+			<div id="chat" class="hiddenView">
+				<div id="groupTitle">
+				</div>
+				<div id="groupChat"></div>
+				<div id="groupMessage">
+					<span>
+						<input class="chatInput" id="message" onkeypress="sendChat(event)"type="text"/>
+						<button class="chatButton" type="submit" id="sendButton"  onclick="sendChat()">Go</button>
+					</span>
+				</div>
 			</div>
 		</div>
 	</body>

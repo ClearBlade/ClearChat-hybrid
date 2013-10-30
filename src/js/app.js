@@ -1,7 +1,10 @@
 //simple globals
-var username ="";
+var userName ="";
 var currentGroup = "";
 var messaging = {};
+
+var currentView;
+var previousView;
 
 //simple functions
 var startup = function() {
@@ -16,14 +19,36 @@ var startup = function() {
 };
 
 var login = function(){
-	showView("groups", "login");
+	
+	var loginButton = document.getElementById("loginButton");
+	loginButton.disabled=true;
+
 	userName = document.getElementById("userName").value;
-	getGroups();
+
+	var col = new ClearBlade.Collection("525542308ab3a3212a06bd82");
+	var query = new ClearBlade.Query();
+	query.equalTo('username', userName);
+	var callback = function(err, data){
+		if (typeof data === 'object'){
+			//alert ("Welcome back "+userName);
+			document.getElementById("welcomeMessage").innerHTML="Welcome back "+userName+".  Start chatting now!";
+		}else{
+			col.create({'username':userName},function(err, data){
+				//alert("Thanks for joining us "+userName);
+				document.getElementById("welcomeMessage").innerHTML="Thanks for joining us "+userName+".  Start chatting now!";
+			});
+		}
+		loginButton.disabled = false;
+		showView("groups", "login");
+		getGroups();
+	}
+	col.fetch(query, callback);
+
 };
 
 var getGroups= function(){
 	var collection = new ClearBlade.Collection("525bf8e48ab3a3212a06bd83");
-	document.getElementById("groupList").innerHTML = "Loading Groups";;
+	document.getElementById("groupList").innerHTML = "Loading Groups";
 	collection.fetch (function (err, data) {
         if (err) {
             throw new Error (data);
@@ -41,31 +66,43 @@ var getGroups= function(){
 	
 };
 
-var joinGroup = function(groupName){
-	messaging = new ClearBlade.Messaging({});
-	var options ={
-		onSuccess:messageReceived,
-		onFailure:messageFailure
+var createGroup = function() {
+	var val = document.getElementById("newGroupName").value;
+	var col = new ClearBlade.Collection("525bf8e48ab3a3212a06bd83");
+	var callback = function(err, data){
+		joinGroup(val);
 	};
-	messaging.Subscribe(groupName, options);
+
+	col.create({'groupName':val},callback);
+}
+var chatString="";
+var joinGroup = function(groupName){
+	currentGroup = groupName;
+	document.getElementById("sendButton").disabled = true;
+	document.getElementById("groupChat").innerHTML = "";
+	chatString="";
+	var onMessageArrived=function(message) {
+	  chatString = chatString + "<br>" +message;
+	  document.getElementById("groupChat").innerHTML = chatString;
+	};	
+
+	var onConnect = function(data) {
+	  // Once a connection has been made, make a subscription and send a message.
+	  messaging.Subscribe("/"+currentGroup, {}, onMessageArrived);
+	  document.getElementById("sendButton").disabled = false;
+	};
+	
+	messaging = new ClearBlade.Messaging({}, onConnect);
 	showView("chat", "groups");
 };
 
-var messageReceived = function(var1, var2, var3){
-	alert("var1: "+var1);
-	alert("var2: "+var2);
-	alert("var3: "+var3);
-}
-
-var messageFailure= function(var1, var2, var3){
-	alert("Failure var1: "+var1);
-	alert("Failure var2: "+var2);
-	alert("failure var3: "+var3);
-}
-
-var sendChat = function() {
-	var message = document.getElementById("message").value;
-	messaging.Publish(currentGroup, message );
+var sendChat = function(e) {
+	if (typeof e === 'undefined' || e.charCode==13){
+		var message = document.getElementById("message").value;
+		message = "<bold>"+userName+"</bold>" +": "+message;
+		messaging.Publish(currentGroup, message );
+		document.getElementById("message").value="";
+	}
 };
 
 //simple helpers
@@ -74,7 +111,17 @@ var showView = function(newView, oldView){
 	if(typeof oldView != 'undefined') {
 		document.getElementById(oldView).classList.toggle('hiddenView');
 	}
+	previousView = oldView;
+	currentView = newView;
 };
+
+var goBack = function() {
+	if (currentView=="chat"){
+		showView("groups", "chat");
+	}else if (currentView=="groups"){
+		showView("login", "groups");
+	}
+}
 
 
 
