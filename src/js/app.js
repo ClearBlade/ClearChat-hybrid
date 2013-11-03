@@ -10,8 +10,8 @@ var previousView;
 var startup = function() {
 	//setup the ClearBlade connection
 	var initOptions = {
-            appKey: "525542228ab3a3212a06bd81",
-            appSecret: "MNDDJ0POOIC98VTS9ZQZQ5JBQB0FKI"
+            appKey: "527275858ab3a335458c31d9",
+            appSecret: "89UY4SOAIU8W7VFRZWVKXIDHU3WH1H"
     };
     ClearBlade.init(initOptions);
 
@@ -25,11 +25,11 @@ var login = function(){
 
 	userName = document.getElementById("userName").value;
 
-	var col = new ClearBlade.Collection("525542308ab3a3212a06bd82");
+	var col = new ClearBlade.Collection("527279d58ab3a335458c31da");
 	var query = new ClearBlade.Query();
 	query.equalTo('username', userName);
 	var callback = function(err, data){
-		if (typeof data === 'object'){
+		if (data.length !== 0){
 			//alert ("Welcome back "+userName);
 			document.getElementById("welcomeMessage").innerHTML="Welcome back "+userName+".  Start chatting now!";
 		}else{
@@ -47,7 +47,7 @@ var login = function(){
 };
 
 var getGroups= function(){
-	var collection = new ClearBlade.Collection("525bf8e48ab3a3212a06bd83");
+	var collection = new ClearBlade.Collection("52727fce8ab3a335458c31db");
 	document.getElementById("groupList").innerHTML = "Loading Groups";
 	collection.fetch (function (err, data) {
         if (err) {
@@ -58,7 +58,7 @@ var getGroups= function(){
             for (var i = 0; i <data.length; i++){
 				var item =  data[i];
 
-				liString = liString + "<li onclick='joinGroup(&quot;"+item.data.groupName+"&quot;)'>"+item.data.groupName+"</li>";
+				liString = liString + "<li onclick='joinGroup(&quot;"+item.data.groupname+"&quot;)'>"+item.data.groupname+"</li>";
             }
           document.getElementById("groupList").innerHTML = liString;
         }
@@ -68,12 +68,12 @@ var getGroups= function(){
 
 var createGroup = function() {
 	var val = document.getElementById("newGroupName").value;
-	var col = new ClearBlade.Collection("525bf8e48ab3a3212a06bd83");
+	var col = new ClearBlade.Collection("52727fce8ab3a335458c31db");
 	var callback = function(err, data){
 		joinGroup(val);
 	};
 
-	col.create({'groupName':val},callback);
+	col.create({'groupname':val},callback);
 }
 var chatString="";
 var joinGroup = function(groupName){
