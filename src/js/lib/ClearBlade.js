@@ -911,7 +911,7 @@ if (!window.console) {
     conf.useSSL = options.useSSL || false; //up for debate. ole' perf vs sec argument
     conf.hosts = ["platform.clearblade.com"];
     conf.ports = [1337];
-    
+
     //conf["clientID"] = Math.floor(Math.random() * 10e12).toString();
     var clientID = Math.floor(Math.random() * 10e12).toString();
     this.client = new Messaging.Client(conf.hosts[0],conf.ports[0],clientID);
@@ -921,12 +921,17 @@ if (!window.console) {
       callback(data);
     };
 
-    this.client.onConnect =onConnect;
+    this.client.onConnect = onConnect;
     var onFailure = function(err) {
       alert("failed to connect");
       callback(err);
     };
-    this.client.connect({onSuccess:onConnect, onFailure:onFailure});
+	
+	conf.onSuccess = onConnect;
+	conf.onFailure = onFailure;
+
+	this.client.connect(conf);//{onSuccess:onConnect, onFailure:onFailure});
+
     };
 
     var onConnectionLost = function(){
@@ -951,9 +956,9 @@ if (!window.console) {
    */
 
     ClearBlade.Messaging.prototype.Publish = function(topic, payload){
-    var msg = new Messaging.Message(payload);
-    msg.destinationName = topic;
-    this.client.send(msg);
+	var msg = new Messaging.Message(payload);
+	msg.destinationName = topic;
+	this.client.send(msg);
     };
 
     /**
