@@ -43,8 +43,6 @@ var login = function(){
 		getGroups();
 	}
 	col.fetch(query, callback);
-//    var onConnect = function(data){console.log(this.messaging)}
-//    messaging = new ClearBlade.Messaging({} , onConnect);
 
 };
 
@@ -98,7 +96,6 @@ var joinGroup = function(groupName){
 	
     messaging = new ClearBlade.Messaging({}, onConnect);
 
-    console.log("after initialization")
 	showView("chat", "groups");
 };
 
@@ -123,7 +120,8 @@ var showView = function(newView, oldView){
 
 var goBack = function() {
 	if (currentView=="chat"){
-		showView("groups", "chat");
+	    messaging.Unsubscribe("/" + currentGroup, {})
+	    showView("groups", "chat");
 	}else if (currentView=="groups"){
 		showView("login", "groups");
 	}
