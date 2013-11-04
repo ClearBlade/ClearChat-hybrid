@@ -88,9 +88,9 @@ var joinGroup = function(groupName){
 
 	var onConnect = function(data) {
 	  // Once a connection has been made, make a subscription and send a message.
-	    console.log("gonna try to subscribe")
+
 	  messaging.Subscribe("/"+currentGroup, {}, onMessageArrived);
-	    console.log("already tried to subscribe")
+
 	  document.getElementById("sendButton").disabled = false;
 	};
 	

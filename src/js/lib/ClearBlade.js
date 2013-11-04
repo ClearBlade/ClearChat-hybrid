@@ -1014,10 +1014,11 @@ if (!window.console) {
     ClearBlade.Messaging.prototype.Unsubscribe = function(topic,options){
 	var conf = {};
 	conf["invocationContext"] = options["invocationContext"] ||  {};
-	conf["onSuccess"] = options["onSuccess"] || null;//function(){};//null;
-	conf["onFailure"] = options["onFailure"] || null;//function(){};//null;
+	conf["onSuccess"] = options["onSuccess"] || function(){};//null;
+	conf["onFailure"] = options["onFailure"] || function(){};//null;
 	conf["timeout"] = options["timeout"] || 60;
 	this.client.unsubscribe(topic,conf);
+	console.log("we unsubscribed")
     };
     
 /**
