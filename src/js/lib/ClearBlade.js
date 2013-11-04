@@ -909,7 +909,7 @@ if (!window.console) {
     conf.password = ClearBlade.appSecret;
     conf.cleanSession = options.cleanSession || true;
     conf.useSSL = options.useSSL || false; //up for debate. ole' perf vs sec argument
-    conf.hosts = "platform.clearblade.com";
+    conf.hosts = ["platform.clearblade.com"];
     conf.ports = [1337];
     
     //conf["clientID"] = Math.floor(Math.random() * 10e12).toString();
