@@ -43,6 +43,8 @@ var login = function(){
 		getGroups();
 	}
 	col.fetch(query, callback);
+//    var onConnect = function(data){console.log(this.messaging)}
+//    messaging = new ClearBlade.Messaging({} , onConnect);
 
 };
 
@@ -72,7 +74,7 @@ var createGroup = function() {
 	var callback = function(err, data){
 		joinGroup(val);
 	};
-
+    //connect to this group?
 	col.create({'groupname':val},callback);
 }
 var chatString="";
@@ -88,11 +90,15 @@ var joinGroup = function(groupName){
 
 	var onConnect = function(data) {
 	  // Once a connection has been made, make a subscription and send a message.
+	    console.log("gonna try to subscribe")
 	  messaging.Subscribe("/"+currentGroup, {}, onMessageArrived);
+	    console.log("already tried to subscribe")
 	  document.getElementById("sendButton").disabled = false;
 	};
 	
-	messaging = new ClearBlade.Messaging({}, onConnect);
+    messaging = new ClearBlade.Messaging({}, onConnect);
+
+    console.log("after initialization")
 	showView("chat", "groups");
 };
 
