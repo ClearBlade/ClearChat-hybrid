@@ -1012,14 +1012,14 @@ if (!window.console) {
    * cb.Unsubscribe("ClearBlade/is awesome!",{"onSuccess":function(){console.log("we unsubscribe);});
    */
     ClearBlade.Messaging.prototype.Unsubscribe = function(topic,options){
-    var conf = {};
-    conf["invocationContext"] = options["invocationContext"] ||  {};
-    conf["onSuccess"] = options["onSuccess"] || null;
-    conf["onFailure"] = options["onFailure"] || null;
-    conf["timeout"] = options["timeout"] || 60;
-    this.client.subscribe(topic,conf);
+	var conf = {};
+	conf["invocationContext"] = options["invocationContext"] ||  {};
+	conf["onSuccess"] = options["onSuccess"] || null;//function(){};//null;
+	conf["onFailure"] = options["onFailure"] || null;//function(){};//null;
+	conf["timeout"] = options["timeout"] || 60;
+	this.client.unsubscribe(topic,conf);
     };
-
+    
 /**
    * Disconnects from the server.
    * @example <caption> How to publish </caption>
