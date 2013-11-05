@@ -82,19 +82,19 @@ var joinGroup = function(groupName){
 	document.getElementById("groupChat").innerHTML = "";
 	chatString="";
 	var onMessageArrived=function(message) {
-	  chatString = chatString + "<br>" +message;
-	  document.getElementById("groupChat").innerHTML = chatString;
+    chatString = chatString + "<br>" +message;
+    document.getElementById("groupChat").innerHTML = chatString;
 	};	
 
 	var onConnect = function(data) {
 	  // Once a connection has been made, make a subscription and send a message.
 
-	  messaging.Subscribe("/"+currentGroup, {}, onMessageArrived);
+    messaging.Subscribe("/"+currentGroup, {}, onMessageArrived);
 
-	  document.getElementById("sendButton").disabled = false;
+    document.getElementById("sendButton").disabled = false;
 	};
 	
-    messaging = new ClearBlade.Messaging({}, onConnect);
+  messaging = new ClearBlade.Messaging({}, onConnect);
 
 	showView("chat", "groups");
 };
@@ -120,8 +120,8 @@ var showView = function(newView, oldView){
 
 var goBack = function() {
 	if (currentView=="chat"){
-	    messaging.Unsubscribe("/" + currentGroup, {})
-	    showView("groups", "chat");
+    messaging.Unsubscribe("/" + currentGroup, {});
+    showView("groups", "chat");
 	}else if (currentView=="groups"){
 		showView("login", "groups");
 	}
