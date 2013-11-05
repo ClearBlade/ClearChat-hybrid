@@ -29,7 +29,7 @@ var login = function(){
 	var query = new ClearBlade.Query();
 	query.equalTo('username', userName);
 	var callback = function(err, data){
-		if (data.length !== 0){
+		if (data instanceof Array && data.length !== 0){
 			//alert ("Welcome back "+userName);
 			document.getElementById("welcomeMessage").innerHTML="Welcome back "+userName+".  Start chatting now!";
 		}else{
