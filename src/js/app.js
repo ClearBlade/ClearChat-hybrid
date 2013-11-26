@@ -82,20 +82,17 @@ var joinGroup = function(groupName){
 	document.getElementById("groupChat").innerHTML = "";
 	chatString="";
 	var onMessageArrived=function(message) {
-    chatString = chatString + "<br>" +message;
-    document.getElementById("groupChat").innerHTML = chatString;
+		chatString = chatString + "<br>" +message;
+		document.getElementById("groupChat").innerHTML = chatString;
 	};	
 
 	var onConnect = function(data) {
-	  // Once a connection has been made, make a subscription and send a message.
-
-    messaging.Subscribe("/"+currentGroup, {}, onMessageArrived);
-
-    document.getElementById("sendButton").disabled = false;
+	  	// Once a connection has been made, make a subscription and send a message.
+		messaging.Subscribe("/"+currentGroup, {}, onMessageArrived);
+		document.getElementById("sendButton").disabled = false;
 	};
 	
-  messaging = new ClearBlade.Messaging({}, onConnect);
-
+  	messaging = new ClearBlade.Messaging({}, onConnect);
 	showView("chat", "groups");
 };
 
