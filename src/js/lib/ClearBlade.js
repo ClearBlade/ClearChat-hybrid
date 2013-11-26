@@ -86,7 +86,7 @@ if (!window.console) {
      * @property URI
      * @type String
      */
-    ClearBlade.URI = options.URI || 'https://platform.clearblade.com';
+    ClearBlade.URI = options.URI || "https://platform.clearblade.com";
     /**
      * This is the property that tells the API whether or not the API will log to the console
      * This should be left `false` in production
@@ -976,12 +976,12 @@ if (!window.console) {
     
     var onConnectionLost = function(){
       alert("connection lost- attempting to reestablish");
-      that.client.connect({onSuccess:onConnect, onFailure:onFailure});
+      that.client.connect(conf);
     };
 
     var onMessageArrived = function(message){
       console.log("message arrived: "+message.payloadString);
-      messaging.messageCallback(message.payloadString);
+      that.messageCallback(message.payloadString);
     };
 
     var clientID = Math.floor(Math.random() * 10e12).toString();
@@ -1035,6 +1035,7 @@ if (!window.console) {
      <p>{function} [onSuccess] The callback invoked on a successful subscription. The default is nothing.</p>
      <p>{function} [onFailure] The callback invoked on a failed subsciption. The default is nothing.</p>
      <p>{Number} [timeout] The time to wait for a response from the server acknowleging the subscription.</p>
+   * @param {function} messageCallback Callback to invoke upon message arrival
    * @example <caption> How to publish </caption>
    * var callback = function (data) {
    *   console.log(data);
