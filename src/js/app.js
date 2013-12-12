@@ -10,8 +10,9 @@ var previousView;
 var startup = function() {
 	//setup the ClearBlade connection
 	var initOptions = {
-            appKey: "eac9d0aa0ae0dcd7b1e496f4ddde01",
-            appSecret: "EAC9D0AA0AAAA886B5B4BBAFC6E701"
+            appKey: "5277bd628ab3a37ce7f6f061",
+            appSecret: "0D2N19VB3FPYJYEBSOI4LVG6M97PKX",
+            URI: "https://dev.clearblade.com"
     };
     ClearBlade.init(initOptions);
 
@@ -25,7 +26,7 @@ var login = function(){
 
 	userName = document.getElementById("userName").value;
 
-	var col = new ClearBlade.Collection("90cad0aa0ac8d8bf89ff8afea432");
+	var col = new ClearBlade.Collection("5277bd878ab3a37ce7f6f062");
 	var query = new ClearBlade.Query();
 	query.equalTo('username', userName);
 	var callback = function(err, data){
@@ -47,7 +48,7 @@ var login = function(){
 };
 
 var getGroups= function(){
-	var collection = new ClearBlade.Collection("98cad0aa0ae8f3e4f888bcdeb29701");
+	var collection = new ClearBlade.Collection("5277bd8f8ab3a37ce7f6f063");
 	document.getElementById("groupList").innerHTML = "Loading Groups";
 	collection.fetch (function (err, data) {
         if (err) {
@@ -68,7 +69,7 @@ var getGroups= function(){
 
 var createGroup = function() {
 	var val = document.getElementById("newGroupName").value;
-	var col = new ClearBlade.Collection("98cad0aa0ae8f3e4f888bcdeb29701");
+	var col = new ClearBlade.Collection("5277bd8f8ab3a37ce7f6f063");
 	var callback = function(err, data){
 		joinGroup(val);
 	};
@@ -92,8 +93,9 @@ var joinGroup = function(groupName){
 		messaging.Subscribe("/"+currentGroup, {}, onMessageArrived);
 		document.getElementById("sendButton").disabled = false;
 	};
-	
-  messaging = new ClearBlade.Messaging({}, onConnect);
+
+  var options = {hosts: ['dev.clearblade.com']};
+  messaging = new ClearBlade.Messaging(options, onConnect);
 	showView("chat", "groups");
 };
 
