@@ -10,8 +10,8 @@ var previousView;
 var startup = function() {
 	//setup the ClearBlade connection
 	var initOptions = {
-            appKey: "5277bd628ab3a37ce7f6f061",
-            appSecret: "0D2N19VB3FPYJYEBSOI4LVG6M97PKX"
+            appKey: "eac9d0aa0ae0dcd7b1e496f4ddde01",
+            appSecret: "EAC9D0AA0AAAA886B5B4BBAFC6E701"
     };
     ClearBlade.init(initOptions);
 
@@ -25,7 +25,7 @@ var login = function(){
 
 	userName = document.getElementById("userName").value;
 
-	var col = new ClearBlade.Collection("5277bd878ab3a37ce7f6f062");
+	var col = new ClearBlade.Collection("90cad0aa0ac8d8bf89ff8afea432");
 	var query = new ClearBlade.Query();
 	query.equalTo('username', userName);
 	var callback = function(err, data){
@@ -47,7 +47,7 @@ var login = function(){
 };
 
 var getGroups= function(){
-	var collection = new ClearBlade.Collection("5277bd8f8ab3a37ce7f6f063");
+	var collection = new ClearBlade.Collection("98cad0aa0ae8f3e4f888bcdeb29701");
 	document.getElementById("groupList").innerHTML = "Loading Groups";
 	collection.fetch (function (err, data) {
         if (err) {
@@ -68,14 +68,15 @@ var getGroups= function(){
 
 var createGroup = function() {
 	var val = document.getElementById("newGroupName").value;
-	var col = new ClearBlade.Collection("5277bd8f8ab3a37ce7f6f063");
+	var col = new ClearBlade.Collection("98cad0aa0ae8f3e4f888bcdeb29701");
 	var callback = function(err, data){
 		joinGroup(val);
 	};
-    //connect to this group?
 	col.create({'groupname':val},callback);
-}
+};
+
 var chatString="";
+
 var joinGroup = function(groupName){
 	currentGroup = groupName;
 	document.getElementById("sendButton").disabled = true;
@@ -87,12 +88,12 @@ var joinGroup = function(groupName){
 	};	
 
 	var onConnect = function(data) {
-	  	// Once a connection has been made, make a subscription and send a message.
+    // Once a connection has been made, make a subscription and send a message.
 		messaging.Subscribe("/"+currentGroup, {}, onMessageArrived);
 		document.getElementById("sendButton").disabled = false;
 	};
 	
-  	messaging = new ClearBlade.Messaging({}, onConnect);
+  messaging = new ClearBlade.Messaging({}, onConnect);
 	showView("chat", "groups");
 };
 
@@ -122,9 +123,4 @@ var goBack = function() {
 	}else if (currentView=="groups"){
 		showView("login", "groups");
 	}
-}
-
-
-
-
-
+};
