@@ -101,7 +101,7 @@ var sendChat = function(e) {
 	if (typeof e === 'undefined' || e.charCode==13){
 		var message = document.getElementById("message").value;
 		message = userName +": "+message;
-		messaging.Publish(currentGroup, message );
+		messaging.Publish("/"+currentGroup, message );
 		document.getElementById("message").value="";
 	}
 };
