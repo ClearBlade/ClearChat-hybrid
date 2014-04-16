@@ -29,7 +29,7 @@ var login = function(){
 	var query = new ClearBlade.Query();
 	query.equalTo('username', userName);
 	var callback = function(err, data){
-		if (data instanceof Array && data.length !== 0){
+		if (data.DATA instanceof Array && data.DATA.length !== 0){
 			//alert ("Welcome back "+userName);
 			document.getElementById("welcomeMessage").innerHTML="Welcome back "+userName+".  Start chatting now!";
 		}else{
@@ -51,14 +51,14 @@ var getGroups= function(){
 	document.getElementById("groupList").innerHTML = "Loading Groups";
 	collection.fetch (function (err, data) {
         if (err) {
-            throw new Error (data);
+            throw new Error (data.DATA);
         } else {
             var groupList = document.getElementById("groupList");
             var liString="";
-            for (var i = 0; i <data.length; i++){
-				var item =  data[i];
+            for (var i = 0; i <data.DATA.length; i++){
+				var item =  data.DATA[i];
 
-				liString = liString + "<li onclick='joinGroup(&quot;"+item.data.groupname+"&quot;)'>"+item.data.groupname+"</li>";
+				liString = liString + "<li onclick='joinGroup(&quot;"+item.groupname+"&quot;)'>"+item.groupname+"</li>";
             }
           document.getElementById("groupList").innerHTML = liString;
         }
