@@ -8,10 +8,11 @@ var previousView;
 
 //simple functions
 var startup = function() {
-	//setup the ClearBlade connection
-	var initOptions = {
-            appKey: "eac9d0aa0ae0dcd7b1e496f4ddde01",
-            appSecret: "EAC9D0AA0AAAA886B5B4BBAFC6E701"
+    //setup the ClearBlade connection
+    var initOptions = {
+        appKey: "eac9d0aa0ae0dcd7b1e496f4ddde01",
+        appSecret: "EAC9D0AA0AAAA886B5B4BBAFC6E701",
+	defaultQoS: ClearBlade.MESSAGING_QOS_EXACTLY_ONCE
     };
     ClearBlade.init(initOptions);
 
