@@ -6,15 +6,17 @@ var messaging = {};
 var currentView;
 var previousView;
 
+var cblade = new ClearBlade();
+
 //simple functions
 var startup = function() {
     //setup the ClearBlade connection
     var initOptions = {
-        appKey: "eac9d0aa0ae0dcd7b1e496f4ddde01",
-        appSecret: "EAC9D0AA0AAAA886B5B4BBAFC6E701",
-	defaultQoS: ClearBlade.MESSAGING_QOS_EXACTLY_ONCE
+      systemKey: "eac9d0aa0ae0dcd7b1e496f4ddde01",
+      systemSecret: "EAC9D0AA0AAAA886B5B4BBAFC6E701",
+	    defaultQoS: ClearBlade.MESSAGING_QOS_EXACTLY_ONCE
     };
-    ClearBlade.init(initOptions);
+    cblade.init(initOptions);
 
     showView("login");
 };
@@ -26,8 +28,8 @@ var login = function(){
 
 	userName = document.getElementById("userName").value;
 
-	var col = new ClearBlade.Collection("90cad0aa0ac8d8bf89ff8afea432");
-	var query = new ClearBlade.Query();
+	var col = cblade.Collection("90cad0aa0ac8d8bf89ff8afea432");
+	var query = cblade.Query();
 	query.equalTo('username', userName);
 	var callback = function(err, data){
 		if (data.DATA instanceof Array && data.DATA.length !== 0){
@@ -48,7 +50,7 @@ var login = function(){
 };
 
 var getGroups= function(){
-	var collection = new ClearBlade.Collection("98cad0aa0ae8f3e4f888bcdeb29701");
+	var collection = cblade.Collection("98cad0aa0ae8f3e4f888bcdeb29701");
 	document.getElementById("groupList").innerHTML = "Loading Groups";
 	collection.fetch (function (err, data) {
         if (err) {
@@ -69,7 +71,7 @@ var getGroups= function(){
 
 var createGroup = function() {
 	var val = document.getElementById("newGroupName").value;
-	var col = new ClearBlade.Collection("98cad0aa0ae8f3e4f888bcdeb29701");
+	var col = cblade.Collection("98cad0aa0ae8f3e4f888bcdeb29701");
 	var callback = function(err, data){
 		joinGroup(val);
 	};
@@ -94,7 +96,7 @@ var joinGroup = function(groupName){
 		document.getElementById("sendButton").disabled = false;
 	};
 	
-  messaging = new ClearBlade.Messaging({}, onConnect);
+  messaging = cblade.Messaging({}, onConnect);
 	showView("chat", "groups");
 };
 
