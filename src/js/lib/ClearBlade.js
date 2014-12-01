@@ -140,7 +140,7 @@ if (!window.console) {
      * @type String
      */
     ClearBlade.prototype.messagingURI = options.messagingURI;
-    this.messagingURI = options.messagingURI || "messaging.clearblade.com";
+    this.messagingURI = options.messagingURI || "platform.clearblade.com";
 
     /**
      * This is the default port used when connecting to the messaging server
@@ -609,10 +609,7 @@ if (!window.console) {
    */
   ClearBlade.prototype.Collection = function(options) {
     var collection = {};
-    if(typeof options === "string") {
-      collection.endpoint = "api/v/1/data/" + options;
-      options = {collectionID: options};
-    } else if (options.collectionName && options.collectionName !== "") {
+    if (options.collectionName && options.collectionName !== "") {
       collection.endpoint = "api/v/1/collection/" + this.systemKey + "/" + options.collectionName;
     } else if(options.collectionID && options.collectionID !== "") {
       collection.endpoint = "api/v/1/data/" + options.collectionID;
@@ -810,10 +807,7 @@ if (!window.console) {
     if (!options) {
       options = {};
     }
-    if(typeof options === "string") {
-      query.endpoint = "api/v/1/data/" + options;
-      options = {collectionID: options};
-    } else if (options.collectionName && options.collectionName !== "") {
+    if (options.collectionName && options.collectionName !== "") {
       query.endpoint = "api/v/1/collection/" + this.systemKey + "/" + options.collectionName;
     } else if(options.collectionID && options.collectionID !== "") {
       query.endpoint = "api/v/1/data/" + options.collectionID;
@@ -959,21 +953,6 @@ if (!window.console) {
      */
     query.notEqualTo = function (field, value) {
       addFilterToQuery(this, "NEQ", field, value);
-      return this;
-    };
-
-    /**
-     * Creates an regular expression matching clause in the query object
-     * @method ClearBlade.Query.prototype.matches
-     * @param {String} field String defining what attribute to compare
-     * @param {String} pattern String or Number that is used to compare against
-     * @example <caption>Adding an regex matching clause to a query</caption>
-     * var query = ClearBlade.Query();
-     * query.matches('name', 'Smith$');
-     * //will only match if an item has an attribute 'name' that That ends in 'Smith'
-     */
-    query.matches = function (field, pattern) {
-      this.addFilterToQuery(this, "RE", field, pattern);
       return this;
     };
 
@@ -1140,11 +1119,8 @@ if (!window.console) {
     if (!(data instanceof Object)) {
       throw new Error("data must be of type Object");
     }
-    if(options === undefined || options === null || options === "") {
-      throw new Error("Must supply an options parameter");
-    }
-    if(typeof options === "string") {
-      options = {collectionID: options};
+    if (!(options instanceof Object)) {
+      throw new Error("You have to give a collection ID");
     }
     item.data = data;
 

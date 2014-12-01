@@ -1,35 +1,86 @@
 <html>
-<head>
-  <title>ClearChatWeb</title>
-  <link type='text/css' rel='stylesheet' href='css/style.css'>
-  <script src='js/lib/ClearBlade.js'></script>
-  <script src='js/lib/mqttws31.js'></script>
-  <script src='js/app.js'></script>
-</head>
-
-<body onload="showView('login');">
-    <div class="title">
-      <div id="titleLeft" onClick="titleLeftClick()"></div>
-      <div id="titleCenter" onClick="titleCenterClick()"></div>
-      <div id="titleRight" onClick="titleRightClick()"></div>
-    </div>
-    <div class="content">
-      <div id="login" class="hiddenView">
-        <!--div class="label">Login</div-->
-        <input class="fullInput" id="userEmail"  placeholder="email" type="text" />
-        <input class="fullInput" id="userPassword" onkeypress="loginEvent(event)" placeholder="password" type="password" />
-        <button id="loginButton" onClick="loginEvent()">Login</button>
-        <div id="loginError"></div>
-        <div class="info" id="registerLabel" onClick="showView('register');"> Click to Register as a new user </div>
-      </div>
-      <div id="register" class="hiddenView">
-			<input class="fullInput" id="registerEmail"  placeholder="Email" type="text"/>
-			<input class="fullInput" id="registerPass1"  placeholder="Password" type="password"/>
-			<input class="fullInput" id="registerPass2"  placeholder="Confirm Password" type="password"/>
-			<input class="fullInput" id="registerFirst"  placeholder="First Name" type="text"/>
-			<input class="fullInput" id="registerLast"  placeholder="Last Name" type="text"/>
-			<div id="registerMessage" class="info"></div>
-			<button id="registerButton" onClick="registerEvent()">Register</button>
+	<head>
+		<title>ClearChatWeb</title>
+		<link type="text/css" rel="stylesheet" href="css/style.css">
+		<script src="js/lib/ClearBlade.js"></script>
+		<script src="js/lib/mqttws31.js"></script>
+		<script src="js/app.js"></script>
+	</head>
+	<body>
+		<div class="title">
+			<div id="titleLeft" onClick="titleLeftClick()"></div>
+			<div id="titleCenter" onClick="titleCenterClick()">IO</div>
+			<div id="titleRight" onClick="titleRightClick()"></div>
 		</div>
-  </body>
+
+		<div class="content">
+			<div class="label">
+				<div id="groupTopic"></div>
+			</div>
+
+			<div id="login" class="hiddenView">
+				<div class="label">Login</div>
+				<input class="fullInput" id="userEmail"  placeholder="email" type="text" />
+				<input class="fullInput" id="userPassword" onkeypress="loginEvent(event)" placeholder="password" type="password" />
+				<button id="loginButton" onClick="loginEvent()">Login</button>
+				<div id="loginError"></div>
+				<div style="padding-top:20px;cursor:pointer" class="info" id="registerLabel" onClick="showRegister();"> Click to Register as a new user </div>
+			</div>
+
+			<div id="registration" class="hiddenView">
+				<input class="fullInput" id="registerEmail"  placeholder="Email" type="text"/>
+				<input class="fullInput" id="registerPass1"  placeholder="Password" type="password"/>
+				<input class="fullInput" id="registerPass2"  placeholder="Confirm Password" type="password"/>
+				<input class="fullInput" id="registerFirst"  placeholder="First Name" type="text"/>
+				<input class="fullInput" id="registerLast"  placeholder="Last Name" type="text"/>
+				<div id="registerMessage" class="info"></div>
+				<button id="registerButton" onClick="register()">Register</button>
+			</div>
+
+			<div id="chat" class="hiddenView">
+				<table style="border-spacing: 0px;width:100%">
+					<tr>
+						<td id="chatGroupList" style="vertical-align:top;background-color:#E8EDED; width:150px">
+							<div id="chatGroupsListParent"></div>
+							<div id="noGroups" class="hiddenView">No groups</div>
+						</td>
+						<td>
+							<div id="groupHeader"></div>
+							<div id="groupChat"></div>
+							<table id="groupMessageText" style="width:100%">
+								<tr>
+									<td style="width:50px">
+										<span class="chatTypeLabel" onClick="toggleChatType()">abc</span>
+									</td>
+									<td>
+										<input class="chatInput" id="message" onkeypress="sendChat(event)"type="text"/>
+									</td>
+									<td style="width:50px">
+										<button class="chatButton" type="submit" id="sendButton"  onclick="sendChat()">Go</button>
+									</td>
+								</tr>
+							</table>
+							<table id="groupMessageBin" class="hiddenView" style="width:100%">
+								<tr>
+									<td style="width:50px">
+										<span class="chatTypeLabel" onClick="toggleChatType()">bin</span>
+									</td>
+									<td>
+										<input class="chatBinInput" type="file" id="getimage">
+									</td>
+									<td style="width:50px">
+										<button class="chatButton" type="submit" id="sendBinButton" onclick="sendBin()">Go</button>
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+				</table>
+
+			</div>
+		<div id="edit" style="display:none"></div>
+	</body>
+	<script>
+		startup();
+	</script>
 </html>
