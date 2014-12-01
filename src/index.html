@@ -1,46 +1,35 @@
 <html>
-	<head>
-		<title>ClearChatWeb</title>
-		<link type="text/css" rel="stylesheet" href="css/style.css">
-		<script src="js/lib/ClearBlade.js"></script>
-		<script src="js/lib/mqttws31.js"></script>
-		<script src="js/app.js"></script>
-	</head>
-	<body>
-		<div id="title">ClearChat Web
-			<div id="titleLeft" onClick="goBack()">Back</div>
+<head>
+  <title>ClearChatWeb</title>
+  <link type='text/css' rel='stylesheet' href='css/style.css'>
+  <script src='js/lib/ClearBlade.js'></script>
+  <script src='js/lib/mqttws31.js'></script>
+  <script src='js/app.js'></script>
+</head>
+
+<body onload="showView('login');">
+    <div class="title">
+      <div id="titleLeft" onClick="titleLeftClick()"></div>
+      <div id="titleCenter" onClick="titleCenterClick()"></div>
+      <div id="titleRight" onClick="titleRightClick()"></div>
+    </div>
+    <div class="content">
+      <div id="login" class="hiddenView">
+        <!--div class="label">Login</div-->
+        <input class="fullInput" id="userEmail"  placeholder="email" type="text" />
+        <input class="fullInput" id="userPassword" onkeypress="loginEvent(event)" placeholder="password" type="password" />
+        <button id="loginButton" onClick="loginEvent()">Login</button>
+        <div id="loginError"></div>
+        <div class="info" id="registerLabel" onClick="showView('register');"> Click to Register as a new user </div>
+      </div>
+      <div id="register" class="hiddenView">
+			<input class="fullInput" id="registerEmail"  placeholder="Email" type="text"/>
+			<input class="fullInput" id="registerPass1"  placeholder="Password" type="password"/>
+			<input class="fullInput" id="registerPass2"  placeholder="Confirm Password" type="password"/>
+			<input class="fullInput" id="registerFirst"  placeholder="First Name" type="text"/>
+			<input class="fullInput" id="registerLast"  placeholder="Last Name" type="text"/>
+			<div id="registerMessage" class="info"></div>
+			<button id="registerButton" onClick="registerEvent()">Register</button>
 		</div>
-		<div class="content">
-			<div id="login" class="hiddenView">
-				<div class="label">UserName</div>
-				<input id="userName"  placeholder="name" type="text"/>
-				<button id="loginButton" onClick="login()">Lets chat</button>
-			</div>
-			<div id="groups" class="hiddenView">
-				<div class="info" id="welcomeMessage"></div>
-				<div class="label">Create Group</div>
-				<input type="text" class="input" placeholder="group name" id="newGroupName"/>
-				<button class="button" onClick="createGroup()">Create Group</button>
-				<div class="label">Current Groups</div>
-				<div>
-					<ul id="groupList">	
-					</ul>
-				</div>
-			</div>
-			<div id="chat" class="hiddenView">
-				<div id="groupTitle">
-				</div>
-				<div id="groupChat"></div>
-				<div id="groupMessage">
-					<span>
-						<input class="chatInput" id="message" onkeypress="sendChat(event)"type="text"/>
-						<button class="chatButton" type="submit" id="sendButton"  onclick="sendChat()">Go</button>
-					</span>
-				</div>
-			</div>
-		</div>
-	</body>
-	<script>
-		startup();
-	</script>
+  </body>
 </html>

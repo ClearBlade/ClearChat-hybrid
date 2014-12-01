@@ -1,129 +1,189 @@
 //simple globals
-var userName ="";
-var currentGroup = "";
-var messaging = {};
+//clearblade object that will be used to call all methods in the SDK
+var clearblade = new ClearBlade();
+var messaging;
 
-var currentView;
-var previousView;
-
-var cblade = new ClearBlade();
-
-//simple functions
-var startup = function() {
-    //setup the ClearBlade connection
-    var initOptions = {
-      systemKey: "eac9d0aa0ae0dcd7b1e496f4ddde01",
-      systemSecret: "EAC9D0AA0AAAA886B5B4BBAFC6E701",
-	    defaultQoS: ClearBlade.MESSAGING_QOS_EXACTLY_ONCE
-    };
-    cblade.init(initOptions);
-
-    showView("login");
+var userInfo = {
+    email : "",
+    firstName : "",
+    lastName : ""
 };
 
-var login = function(){
-	
-	var loginButton = document.getElementById("loginButton");
-	loginButton.disabled=true;
-
-	userName = document.getElementById("userName").value;
-
-	var col = cblade.Collection("90cad0aa0ac8d8bf89ff8afea432");
-	var query = cblade.Query();
-	query.equalTo('username', userName);
-	var callback = function(err, data){
-		if (data.DATA instanceof Array && data.DATA.length !== 0){
-			//alert ("Welcome back "+userName);
-			document.getElementById("welcomeMessage").innerHTML="Welcome back "+userName+".  Start chatting now!";
-		}else{
-			col.create({'username':userName},function(err, data){
-				//alert("Thanks for joining us "+userName);
-				document.getElementById("welcomeMessage").innerHTML="Thanks for joining us "+userName+".  Start chatting now!";
-			});
-		}
-		loginButton.disabled = false;
-		showView("groups", "login");
-		getGroups();
-	}
-	col.fetch(query, callback);
-
+var initOptions = {
+    systemKey: "ca9eb0c70a86a2ffdd9eddedb4b501",
+    systemSecret: "CA9EB0C70AB0B9B597C3C2A6E0BE01",
+    email:"",
+    password:""
 };
 
-var getGroups= function(){
-	var collection = cblade.Collection("98cad0aa0ae8f3e4f888bcdeb29701");
-	document.getElementById("groupList").innerHTML = "Loading Groups";
-	collection.fetch (function (err, data) {
-        if (err) {
-            throw new Error (data.DATA);
-        } else {
-            var groupList = document.getElementById("groupList");
-            var liString="";
-            for (var i = 0; i <data.DATA.length; i++){
-				var item =  data.DATA[i];
+clearblade.init(initOptions);
 
-				liString = liString + "<li onclick='joinGroup(&quot;"+item.groupname+"&quot;)'>"+item.groupname+"</li>";
+var registerEmail;
+var registerPassword;
+var registerFirst;
+var registerLast;
+
+//Begin - login logic
+var loginEvent = function(e){
+    if (typeof e === 'undefined' || e.charCode==13){
+        document.getElementById("loginError").innerHTML="";
+        var loginButton = document.getElementById("loginButton");
+        loginButton.disabled=true;
+
+        userInfo.email = document.getElementById("userEmail").value;
+        userPassword = document.getElementById("userPassword").value;
+
+        login(userInfo.email, userPassword, function(err, data) {
+            if(err) {
+                document.getElementById("loginError").innerHTML=data;
+            } else {
+                showView("chat");
             }
-          document.getElementById("groupList").innerHTML = liString;
+        });
+
+    }
+
+};
+
+var login = function(userEmail, userPassword, callback) {
+    var loginCallback = function(err, data){
+        if(err) {
+            callback(err, data);
+        } else {
+            messaging = clearblade.Messaging({cleanSession:true}, function() {});
+            loadUserInfo();
+            showView("chat");
+            callback(err, data);
         }
-	});
-	
+
+    };
+    initOptions.email = userEmail;
+    initOptions.password = userPassword;
+    initOptions.callback = loginCallback;
+    clearblade.init(initOptions);
 };
 
-var createGroup = function() {
-	var val = document.getElementById("newGroupName").value;
-	var col = cblade.Collection("98cad0aa0ae8f3e4f888bcdeb29701");
-	var callback = function(err, data){
-		joinGroup(val);
-	};
-	col.create({'groupname':val},callback);
+var loadUserInfo = function() {
+    var callback = function(err, data){
+        if (err) {
+            alert(JSON.stringify(data));
+        }else{
+            userInfo.email = data.email;
+            userInfo.firstName = data.firstname;
+            userInfo.lastName = data.lastname;
+        }
+    };
+    clearblade.User().getUser(callback);
+};
+//End - Login logic
+
+//Begin - Register logic
+var registerEvent = function(e) {
+    if (typeof e === 'undefined' || e.charCode==13){
+        var registerButton = document.getElementById("registerButton");
+        registerButton.disabled=true;
+
+        //first add the user to the System
+        registerEmail = document.getElementById("registerEmail").value;
+        registerPassword = document.getElementById("registerPass1").value;
+        registerConfirm = document.getElementById("registerPass2").value;
+        registerFirst = document.getElementById("registerFirst").value;
+        registerLast = document.getElementById("registerLast").value;
+        if (registerPassword != registerConfirm) {
+            document.getElementById("registerMessage").innerHTML = "passwords do not match";
+            registerButton.disabled = false;
+            return;
+        }
+        if (registerEmail === "" || registerPassword ==="" || registerFirst ==="" || registerLast===""){
+            document.getElementById("registerMessage").innerHTML = "all field are required";
+            registerButton.disabled = false;
+            return;
+        }
+        register(registerEmail, registerPassword);
+    }
 };
 
-var chatString="";
+var register = function(userEmail, userPassword) {
+    clearblade.registerUser(userEmail, userPassword, registerCallback);
 
-var joinGroup = function(groupName){
-	currentGroup = groupName;
-	document.getElementById("sendButton").disabled = true;
-	document.getElementById("groupChat").innerHTML = "";
-	chatString="";
-	var onMessageArrived=function(message) {
-		chatString = chatString + "<br>" +message;
-		document.getElementById("groupChat").innerHTML = chatString;
-	};	
+};
+//End - Register logic
 
-	var onConnect = function(data) {
-    // Once a connection has been made, make a subscription and send a message.
-		messaging.Subscribe("/"+currentGroup, {}, onMessageArrived);
-		document.getElementById("sendButton").disabled = false;
-	};
-	
-  messaging = cblade.Messaging({}, onConnect);
-	showView("chat", "groups");
+var registerCallback = function(err, data) {
+    if (err) {
+        registerButton.disabled=false;
+        document.getElementById("registerMessage").innerHTML = data;
+    } else{
+
+
+        login(registerEmail, registerPassword, function(err, data) {
+            if(err) {
+                alert(JSON.stringify(data));
+            } else {
+                var user = clearblade.User();
+                user.setUser({"firstname":registerFirst,"lastname":registerLast}, function(err, data){
+                    if(err) {
+                        alert("Unable to save user info; " + JSON.stringify(data));
+                    } else {
+                        _connect();
+                        email = registerEmail;
+                        loadUserInfo();
+                        showView("chat");
+                        registerButton.disabled=false;
+                    }
+                });
+            }
+
+        });
+
+    }
+
 };
 
-var sendChat = function(e) {
-	if (typeof e === 'undefined' || e.charCode==13){
-		var message = document.getElementById("message").value;
-		message = userName +": "+message;
-		messaging.Publish("/"+currentGroup, message );
-		document.getElementById("message").value="";
-	}
+var views = {
+    login: {
+        setup: function() {
+            setTitleSection("titleLeft","");
+            setTitleSection("titleCenter","ClearChat");
+            setTitleSection("titleRight","");
+
+        }
+    },
+    register: {
+        setup: function() {
+            setTitleSection("titleLeft","Back");
+            setTitleSection("titleCenter","ClearChat");
+            setTitleRight("");
+            titleLeftClick = function() {
+                showView("login");
+            };
+            titleCenterClick = function() {};
+        }
+
+    }
 };
 
-//simple helpers
-var showView = function(newView, oldView){
-	document.getElementById(newView).classList.toggle('hiddenView');
-	if(typeof oldView != 'undefined') {
-		document.getElementById(oldView).classList.toggle('hiddenView');
-	}
-	previousView = oldView;
-	currentView = newView;
+
+//UI helper functions for building and rendering on a mobile style device
+var showView = function(viewToShow) {
+    for(var view in views) {
+        if(view === viewToShow) {
+            document.getElementById(viewToShow).className = "";
+            views[view].setup();
+        } else {
+            document.getElementById(view).className = "hiddenView";
+        }
+    }
+};
+//Populate the header bar on the mobile view
+var setTitleSection = function(section, content){
+    document.getElementById(section).innerHTML= content;
+    if (content===""){
+        document.getElementById(section).style.display = "none";
+    } else {
+        document.getElementById(section).style.display = "inline";
+    }
 };
 
-var goBack = function() {
-	if (currentView=="chat"){
-    messaging.Unsubscribe("/" + currentGroup, {});
-    showView("groups", "chat");
-	}else if (currentView=="groups"){
-		showView("login", "groups");
-	}
-};
+
+
