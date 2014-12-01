@@ -60,7 +60,7 @@ var logout = function() {
     if(currentGroup.data && currentGroup.data.item_id) {
         unsubscribe(currentGroup.data.item_id, {});
     }
-    setTopic("");
+
     setTitleCenter("<div class='titleLabel'>IO</div>");
     setTitleLeft("");
     setTitleRight("");
@@ -103,7 +103,6 @@ var views = {
             setTitleRight("Done");
 
             var groupNameValue = currentGroup.data && currentGroup.data.name ? currentGroup.data.name : "";
-            var topicValue = currentGroup.data && currentGroup.data.topic ? currentGroup.data.topic : "";
             setTitleCenter("<input class='halfInput' type='text' id='groupNameField' placeholder='Group Name' value='"+groupNameValue+"'/>");
 
 
@@ -147,7 +146,6 @@ var views = {
                 }else {
                     //we have a current group; user is updating it
                     currentGroup.data.name = groupName;
-                    currentGroup.data.topic = topic;
                     currentGroup.save(function(err, data) {
                         if(err) {
                             alert(JSON.stringify(data));
@@ -170,9 +168,6 @@ var views = {
                 setTitleLeft("Back");
                 setTitleCenter("<div class='titleLabel'>IO - "+currentGroup.data.name+"</div>");
                 setTitleRight("Edit");
-
-                var topicContent = currentGroup.data.topic && currentGroup.data.topic !== "null" ? "Current Topic - " + currentGroup.data.topic : "No Topic set";
-                setTopic(topicContent);
 
                 titleLeftClick = function() {
                     unsubscribe(currentGroup.data.item_id);
@@ -249,7 +244,6 @@ var views = {
                 setTitleRight("New");
                 setTitleLeft("Logout");
                 setTitleCenter("IO");
-                setTopic("");
                 titleLeftClick = function() {
                     logout();
                 }
@@ -517,10 +511,6 @@ var titleLeftClick = function() {};
 var setTitleCenter = function(content){
     setTitleSection("titleCenter", content);
 };
-
-var setTopic = function(content) {
-    setTitleSection("groupTopic", content);
-}
 
 var titleCenterClick = function() {};
 
