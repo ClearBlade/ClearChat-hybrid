@@ -6,10 +6,10 @@ var email ="";
 var firstName = "";
 var lastName = "";
 var initOptions = {
-    systemKey: "e6cf87c60af0e1b982aaaedc979701",
-    systemSecret: "E6CF87C60AC0A88DA4A69183B1D301"
+    systemKey: YOUR_SYSTEM_KEY,
+    systemSecret: YOUR_SYSTEM_SECRET
 }
-var groupCollectionID = "d8b288c60a8ad0aa82eaee9ddd06";
+var groupCollectionID = YOUR_COLLECTION_ID;
 
 var currentGroup = "";
 var publicGroups = [];
