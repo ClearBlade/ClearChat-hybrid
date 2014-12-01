@@ -105,7 +105,6 @@ var views = {
             var groupNameValue = currentGroup.data && currentGroup.data.name ? currentGroup.data.name : "";
             var topicValue = currentGroup.data && currentGroup.data.topic ? currentGroup.data.topic : "";
             setTitleCenter("<input class='halfInput' type='text' id='groupNameField' placeholder='Group Name' value='"+groupNameValue+"'/>");
-            setTopic("<input class='halfInput' type='text' id='groupTopicField' placeholder='Current Topic' value='"+topicValue+"'/>");
 
 
             titleLeftClick = function() {
@@ -113,7 +112,6 @@ var views = {
             }
             titleRightClick = function() {
                 var groupName = document.getElementById("groupNameField").value;
-                var topic = document.getElementById("groupTopicField").value || "";
 
                 if (groupName === "") {
                     return;
@@ -123,7 +121,6 @@ var views = {
                     //no group is selected; user is creating a new group
                     var groupObj = {
                         name: groupName,
-                        topic: topic,
                         collectionID: groupCollectionID
                     }
 
