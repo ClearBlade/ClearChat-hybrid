@@ -176,34 +176,6 @@ var login = function(userEmail, userPassword, callback) {
   cb.loginUser(userEmail, userPassword, _cb);
 }
 
-var createGroup = function(name) {
-  var groupObj = {
-    name: name,
-    collectionID: groupCollectionID
-  }
-
-  var params = {"group":groupObj};
-  var _cb = function(err, data) {
-    if(err) {
-      alert(JSON.stringify(data));
-    } else {
-      if(data.results.code !== 200) {
-        if(data.results.code === 409) {
-          alert(JSON.stringify(data));
-        } else {
-          alert("Error creating group; " + JSON.stringify(data));
-        }
-      } else {
-        var newGroup = cb.Item(data, {collectionID: groupCollectionID});
-        publicGroups.push(newGroup);
-        createGroupList(publicGroups);
-        views.chat.setup(newGroup.data.item_id);
-      }
-    }
-  }
-  cb.Code().execute("ioCreateGroup", params, _cb);
-}
-
 var loginEvent = function(e){
   if (typeof e === 'undefined' || e.charCode==13){
     document.getElementById("loginError").innerHTML="";
