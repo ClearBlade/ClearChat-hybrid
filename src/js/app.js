@@ -5,10 +5,6 @@ var cb = new ClearBlade();
 var email ="";
 var firstName = "";
 var lastName = "";
-var initOptions = {
-  systemKey: YOUR_SYSTEM_KEY,
-  systemSecret: YOUR_SYSTEM_SECRET
-}
 var groupCollectionID = YOUR_COLLECTION_ID;
 
 var currentGroup = "";
@@ -17,6 +13,10 @@ var publicGroups = [];
 var currentItem;
 
 var startup = function() {
+  var initOptions = {
+    systemKey: YOUR_SYSTEM_KEY,
+    systemSecret: YOUR_SYSTEM_SECRET
+  }
   cb.init(initOptions);
   showView("login");
   calculateMessageHeight();
