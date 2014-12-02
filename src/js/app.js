@@ -24,7 +24,6 @@ var startup = function() {
 
 var logout = function() {
   if(currentGroup.data && currentGroup.data.item_id) {
-    unsubscribe(currentGroup.data.item_id, {});
   }
 
   setTitleCenter("<div class='titleLabel'>IO</div>");
@@ -103,7 +102,6 @@ var views = {
         setTitleRight("Edit");
 
         titleLeftClick = function() {
-          unsubscribe(currentGroup.data.item_id);
           views.chat.setup(null);
         };
         titleCenterClick = function() {};
@@ -124,18 +122,8 @@ var views = {
           views.edit.setup();
         }
 
-        var query = cb.Query({collectionID: groupCollectionID});
-        query.setPage(0,0);
-        query.fetch(function(err, data){
-          if (err){
-            document.getElementById("groupList").innerHTML = "Failed to retrieve groups";
-          }else{
-            publicGroups = data;
-            createGroupList(publicGroups);
-          }
-        });
+        fetchGroups();
 
-        subscribe(currentGroup.data.item_id);
       }
 
     }
@@ -158,7 +146,6 @@ var login = function(userEmail, userPassword, callback) {
     if(err) {
       callback(err, data);
     } else {
-      _connect();
       email = userEmail;
       loadUserInfo();
       callback(err, data);
@@ -205,8 +192,17 @@ var loadUserInfo = function() {
   user.getUser(callback);
 };
 
-var showRegister = function() {
-  showView("registration");
+var fetchGroups = function() {
+  var query = cb.Query({collectionID: groupCollectionID});
+  query.setPage(0,0);
+  query.fetch(function(err, data){
+    if (err){
+      document.getElementById("groupList").innerHTML = "Failed to retrieve groups";
+    }else{
+      publicGroups = data;
+      createGroupList(publicGroups);
+    }
+  });
 }
 
 var register = function(userName) {
@@ -290,7 +286,6 @@ var getGroupById = function(searchId){
 var selectGroup = function(groupId){
   if (currentGroup.data && currentGroup.data.item_id){
     //we are changing topics within the chat view, unsub from the current chat
-    unsubscribe(currentGroup.data.item_id);
   }
 
   views.chat.setup(groupId);
