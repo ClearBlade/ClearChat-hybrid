@@ -192,8 +192,17 @@ var loadUserInfo = function() {
   user.getUser(callback);
 };
 
-var showRegister = function() {
-  showView("registration");
+var fetchGroups = function() {
+  var query = cb.Query({collectionID: groupCollectionID});
+  query.setPage(0,0);
+  query.fetch(function(err, data){
+    if (err){
+      document.getElementById("groupList").innerHTML = "Failed to retrieve groups";
+    }else{
+      publicGroups = data;
+      createGroupList(publicGroups);
+    }
+  });
 }
 
 var register = function(userName) {
