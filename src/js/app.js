@@ -141,50 +141,6 @@ var views = {
         titleRightClick = function() {
           views.edit.setup();
         };
-        var onMessageArrived=function(message, sendDate) {
-          if(typeof message === "string") {
-            message = JSON.parse(message);
-          }
-
-          var messageDiv = document.createElement("div");
-          var messageSpan = document.createElement("span");
-          messageDiv.appendChild(messageSpan);
-          messageDiv.className="messageBox";
-          var nameDiv = document.createElement("span");
-          nameDiv.className="messageName"
-          nameDiv.appendChild(document.createTextNode(message.name));
-          var messageContentDiv = document.createElement("span");
-          messageContentDiv.className="messageContent";
-          if (message.type=="text"){
-            messageContentDiv.appendChild(document.createTextNode(message.payload));
-          } else if (message.type=="img"){
-
-            messageContentDiv.innerHTML='<img src="' + message.payload +'">';
-          }
-
-          var currentTime = sendDate !== undefined ? new Date(sendDate*1000) : new Date();
-          var messageTimeDiv = document.createElement("span");
-          messageTimeDiv.className="messageTime";
-          messageTimeDiv.appendChild(document.createTextNode(currentTime.getHours()+":"+currentTime.getMinutes()))
-
-          if (message.user_id == email){
-            messageSpan.appendChild(messageContentDiv);
-            messageSpan.appendChild(messageTimeDiv);
-            messageSpan.appendChild(nameDiv);
-            messageDiv.style.textAlign="right";
-          } else {
-            messageSpan.appendChild(nameDiv);
-            messageSpan.appendChild(messageContentDiv);
-            messageSpan.appendChild(messageTimeDiv);
-            messageDiv.style.textAlign="left";
-          }
-
-          var groupChatDiv = document.getElementById("groupChat");
-          groupChatDiv.appendChild(messageDiv);
-          groupChatDiv.scrollTop = groupChatDiv.scrollHeight;
-        };
-
-        messaging.Subscribe("/"+currentGroup.data.item_id, {}, onMessageArrived);
 
       } else {
         //no group selected; show overview
@@ -270,10 +226,6 @@ var messaging = {};
 var _connect = function() {
   messaging = cb.Messaging({cleanSession:true}, function() {});
 };
-
-var unsubscribe = function(groupId){
-  messaging.Unsubscribe(groupId, {});
-}
 
 var loadUserInfo = function() {
   var callback = function(err, data){
