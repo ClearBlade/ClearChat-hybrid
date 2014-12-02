@@ -1,14 +1,9 @@
 
 //simple globals
 //clearblade object that will be used to call all methods in the SDK
-var cb = new ClearBlade();
 var email ="";
 var firstName = "";
 var lastName = "";
-var initOptions = {
-  systemKey: YOUR_SYSTEM_KEY,
-  systemSecret: YOUR_SYSTEM_SECRET
-}
 var groupCollectionID = YOUR_COLLECTION_ID;
 
 var currentGroup = "";
@@ -17,7 +12,6 @@ var publicGroups = [];
 var currentItem;
 
 var startup = function() {
-  cb.init(initOptions);
   showView("login");
   calculateMessageHeight();
 };
