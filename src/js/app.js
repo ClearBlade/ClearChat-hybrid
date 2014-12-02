@@ -141,57 +141,6 @@ var showView = function(viewToShow) {
   }
 }
 
-var login = function(userEmail, userPassword, callback) {
-  var _cb = function(err, data){
-    if(err) {
-      callback(err, data);
-    } else {
-      email = userEmail;
-      loadUserInfo();
-      callback(err, data);
-    }
-
-  };
-
-  cb.loginUser(userEmail, userPassword, _cb);
-}
-
-var loginEvent = function(e){
-  if (typeof e === 'undefined' || e.charCode==13){
-    document.getElementById("loginError").innerHTML="";
-    var loginButton = document.getElementById("loginButton");
-    loginButton.disabled=true;
-
-    userEmail = document.getElementById("userEmail").value;
-    userPassword = document.getElementById("userPassword").value;
-
-    login(userEmail, userPassword, function(err, data) {
-      if(err) {
-        document.getElementById("loginError").innerHTML=data;
-      } else {
-        showView("chat");
-      }
-    });
-
-  }
-
-};
-
-var loadUserInfo = function() {
-  var callback = function(err, data){
-    if (err) {
-      alert(JSON.stringify(data));
-    }else{
-      email =data.email;
-      firstName = data.firstname;
-      lastName = data.lastname;
-    }
-  };
-
-  var user = cb.User();
-  user.getUser(callback);
-};
-
 var refreshGroups = true;
 
 var createGroupList = function(groups) {
