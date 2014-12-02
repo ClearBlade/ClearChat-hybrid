@@ -165,6 +165,8 @@ var views = {
             createGroupList(publicGroups);
           }
         });
+
+        subscribe(currentGroup.data.item_id);
       }
 
     }
@@ -187,7 +189,6 @@ var login = function(userEmail, userPassword, callback) {
     if(err) {
       callback(err, data);
     } else {
-      loginButton
       _connect();
       email = userEmail;
       loadUserInfo();
@@ -218,13 +219,6 @@ var loginEvent = function(e){
 
   }
 
-};
-//object that will hold clearblade messaging object
-var messaging = {};
-
-//connection function for message broker
-var _connect = function() {
-  messaging = cb.Messaging({cleanSession:true}, function() {});
 };
 
 var loadUserInfo = function() {
