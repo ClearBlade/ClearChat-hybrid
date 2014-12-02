@@ -1,0 +1,3 @@
+[submodule "src/js/lib/JavaScript-API"]
+	path = src/js/lib/JavaScript-API
+	url = https://github.com/ClearBlade/JavaScript-API.git
