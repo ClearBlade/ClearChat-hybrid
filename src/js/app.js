@@ -6,10 +6,10 @@ var email ="";
 var firstName = "";
 var lastName = "";
 var initOptions = {
-  systemKey: "ca9eb0c70a86a2ffdd9eddedb4b501",
-  systemSecret: "CA9EB0C70AB0B9B597C3C2A6E0BE01"
+  systemKey: YOUR_SYSTEM_KEY,
+  systemSecret: YOUR_SYSTEM_SECRET
 }
-var groupCollectionID = "92a2b0c70ae28beadcfaa8b2dbde01";
+var groupCollectionID = YOUR_COLLECTION_ID;
 
 var currentGroup = "";
 var publicGroups = [];
@@ -184,19 +184,7 @@ var views = {
           groupChatDiv.scrollTop = groupChatDiv.scrollHeight;
         };
 
-        var messageHistoryCb = function(err, body) {
-          if(err) {
-            alert("Unable to retrieve message history for " + currentGroup.data.name + "; " + JSON.stringify(body));
-          } else {
-            for(var i=body.length-1; i>-1; i--) {
-              onMessageArrived(body[i].message, body[i]["send-date"]);
-            }
-          }
-        }
-
         messaging.Subscribe("/"+currentGroup.data.item_id, {}, onMessageArrived);
-
-        messaging.getMessageHistory(currentGroup.data.item_id, new Date().getTime(), 25, messageHistoryCb);
 
       } else {
         //no group selected; show overview
