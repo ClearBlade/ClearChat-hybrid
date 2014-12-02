@@ -6,10 +6,10 @@ var email ="";
 var firstName = "";
 var lastName = "";
 var initOptions = {
-  systemKey: YOUR_SYSTEM_KEY,
-  systemSecret: YOUR_SYSTEM_SECRET
+  systemKey: "ca9eb0c70a86a2ffdd9eddedb4b501",
+  systemSecret: "CA9EB0C70AB0B9B597C3C2A6E0BE01"
 }
-var groupCollectionID = YOUR_COLLECTION_ID;
+var groupCollectionID = "92a2b0c70ae28beadcfaa8b2dbde01";
 
 var currentGroup = "";
 var publicGroups = [];
@@ -24,7 +24,6 @@ var startup = function() {
 
 var logout = function() {
   if(currentGroup.data && currentGroup.data.item_id) {
-    unsubscribe(currentGroup.data.item_id, {});
   }
 
   setTitleCenter("<div class='titleLabel'>IO</div>");
@@ -103,7 +102,6 @@ var views = {
         setTitleRight("Edit");
 
         titleLeftClick = function() {
-          unsubscribe(currentGroup.data.item_id);
           views.chat.setup(null);
         };
         titleCenterClick = function() {};
@@ -124,18 +122,8 @@ var views = {
           views.edit.setup();
         }
 
-        var query = cb.Query({collectionID: groupCollectionID});
-        query.setPage(0,0);
-        query.fetch(function(err, data){
-          if (err){
-            document.getElementById("groupList").innerHTML = "Failed to retrieve groups";
-          }else{
-            publicGroups = data;
-            createGroupList(publicGroups);
-          }
-        });
+        fetchGroups();
 
-        subscribe(currentGroup.data.item_id);
       }
 
     }
@@ -158,7 +146,6 @@ var login = function(userEmail, userPassword, callback) {
     if(err) {
       callback(err, data);
     } else {
-      _connect();
       email = userEmail;
       loadUserInfo();
       callback(err, data);
@@ -290,7 +277,6 @@ var getGroupById = function(searchId){
 var selectGroup = function(groupId){
   if (currentGroup.data && currentGroup.data.item_id){
     //we are changing topics within the chat view, unsub from the current chat
-    unsubscribe(currentGroup.data.item_id);
   }
 
   views.chat.setup(groupId);
