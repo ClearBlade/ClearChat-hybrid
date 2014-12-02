@@ -82,31 +82,7 @@ var views = {
 
         if (typeof currentGroup.data == 'undefined' || typeof currentGroup.data.item_id == 'undefined') {
           //no group is selected; user is creating a new group
-          var groupObj = {
-            name: groupName,
-            collectionID: groupCollectionID
-          }
-
-          var params = {"group":groupObj};
-          var _cb = function(err, data) {
-            if(err) {
-              alert(JSON.stringify(data));
-            } else {
-              if(data.results.code !== 200) {
-                if(data.results.code === 409) {
-                  alert(JSON.stringify(data));
-                } else {
-                  alert("Error creating group; " + JSON.stringify(data));
-                }
-              } else {
-                var newGroup = cb.Item(data, {collectionID: groupCollectionID});
-                publicGroups.push(newGroup);
-                createGroupList(publicGroups);
-                views.chat.setup(newGroup.data.item_id);
-              }
-            }
-          }
-          cb.Code().execute("ioCreateGroup", params, _cb);
+          createGroup(groupName);
         }else {
           //we have a current group; user is updating it
           currentGroup.data.name = groupName;
@@ -198,6 +174,34 @@ var login = function(userEmail, userPassword, callback) {
   };
 
   cb.loginUser(userEmail, userPassword, _cb);
+}
+
+var createGroup = function(name) {
+  var groupObj = {
+    name: name,
+    collectionID: groupCollectionID
+  }
+
+  var params = {"group":groupObj};
+  var _cb = function(err, data) {
+    if(err) {
+      alert(JSON.stringify(data));
+    } else {
+      if(data.results.code !== 200) {
+        if(data.results.code === 409) {
+          alert(JSON.stringify(data));
+        } else {
+          alert("Error creating group; " + JSON.stringify(data));
+        }
+      } else {
+        var newGroup = cb.Item(data, {collectionID: groupCollectionID});
+        publicGroups.push(newGroup);
+        createGroupList(publicGroups);
+        views.chat.setup(newGroup.data.item_id);
+      }
+    }
+  }
+  cb.Code().execute("ioCreateGroup", params, _cb);
 }
 
 var loginEvent = function(e){
