@@ -120,6 +120,8 @@ var views = {
 
         subscribe(currentGroup.data.item_id);
 
+        getMessageHistory(currentGroup.data.item_id);
+
       } else {
         //no group selected; show overview
         document.getElementById("groupChat").innerHTML = "";
