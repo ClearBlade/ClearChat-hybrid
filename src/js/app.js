@@ -194,11 +194,7 @@ var views = {
           }
         }
 
-        var _sub = function(data) {
-          messaging.Subscribe("/"+currentGroup.data.item_id, {}, onMessageArrived);
-        }
-
-        messaging = cb.Messaging({cleanSession:true}, _sub);
+        messaging.Subscribe("/"+currentGroup.data.item_id, {}, onMessageArrived);
 
         messaging.getMessageHistory(currentGroup.data.item_id, new Date().getTime(), 25, messageHistoryCb);
 
