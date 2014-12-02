@@ -84,7 +84,14 @@ var views = {
           createGroup(groupName);
         }else {
           //we have a current group; user is updating it
-
+          currentGroup.data.name = groupName;
+          currentGroup.save(function(err, data) {
+            if(err) {
+              alert(JSON.stringify(data));
+            } else {
+              createGroupList(publicGroups);
+            }
+          });
           views.chat.setup(currentGroup.data.item_id);
         }
       }
