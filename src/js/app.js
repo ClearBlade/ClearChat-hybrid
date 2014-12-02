@@ -133,16 +133,7 @@ var views = {
           views.edit.setup();
         }
 
-        var query = cb.Query({collectionID: groupCollectionID});
-        query.setPage(0,0);
-        query.fetch(function(err, data){
-          if (err){
-            document.getElementById("groupList").innerHTML = "Failed to retrieve groups";
-          }else{
-            publicGroups = data;
-            createGroupList(publicGroups);
-          }
-        });
+        fetchGroups();
       }
 
     }
@@ -202,6 +193,19 @@ var createGroup = function(name) {
     }
   }
   cb.Code().execute("ioCreateGroup", params, _cb);
+}
+
+var fetchGroups = function() {
+  var query = cb.Query({collectionID: groupCollectionID});
+  query.setPage(0,0);
+  query.fetch(function(err, data){
+    if (err){
+      document.getElementById("groupList").innerHTML = "Failed to retrieve groups";
+    }else{
+      publicGroups = data;
+      createGroupList(publicGroups);
+    }
+  });
 }
 
 var loginEvent = function(e){
