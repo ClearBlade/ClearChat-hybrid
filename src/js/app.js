@@ -166,15 +166,7 @@ var createGroup = function(name) {
 }
 
 var saveGroup = function(name) {
-  currentGroup.data.name = name;
-  currentGroup.save(function(err, data) {
-    if(err) {
-      alert(JSON.stringify(data));
-    } else {
-      createGroupList(publicGroups);
-      views.chat.setup(currentGroup.data.item_id);
-    }
-  });
+
 }
 
 var fetchGroups = function() {
