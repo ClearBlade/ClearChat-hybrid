@@ -147,18 +147,7 @@ var showView = function(viewToShow) {
 }
 
 var login = function(userEmail, userPassword, callback) {
-  var _cb = function(err, data){
-    if(err) {
-      callback(err, data);
-    } else {
-      email = userEmail;
-      loadUserInfo();
-      callback(err, data);
-    }
 
-  };
-
-  cb.loginUser(userEmail, userPassword, _cb);
 }
 
 var register = function() {
@@ -263,18 +252,7 @@ var getMessageHistory = function(groupId) {
 }
 
 var loadUserInfo = function() {
-  var callback = function(err, data){
-    if (err) {
-      alert(JSON.stringify(data));
-    }else{
-      email =data.email;
-      firstName = data.firstname;
-      lastName = data.lastname;
-    }
-  };
 
-  var user = cb.User();
-  user.getUser(callback);
 };
 
 var refreshGroups = true;
