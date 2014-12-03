@@ -164,7 +164,7 @@ var login = function(userEmail, userPassword, callback) {
   cb.loginUser(userEmail, userPassword, _cb);
 }
 
-var register = function(userName) {
+var register = function() {
   var registerButton = document.getElementById("registerButton");
   registerButton.disabled=true;
 
