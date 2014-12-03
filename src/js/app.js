@@ -161,6 +161,59 @@ var login = function(userEmail, userPassword, callback) {
   cb.loginUser(userEmail, userPassword, _cb);
 }
 
+var register = function() {
+  var registerButton = document.getElementById("registerButton");
+  registerButton.disabled=true;
+
+  //first add the user to the System
+  registerEmail = document.getElementById("registerEmail").value;
+  registerPassword = document.getElementById("registerPass1").value;
+  registerConfirm = document.getElementById("registerPass2").value;
+  registerFirst = document.getElementById("registerFirst").value;
+  registerLast = document.getElementById("registerLast").value;
+  if (registerPassword != registerConfirm) {
+    document.getElementById("registerMessage").innerHTML = "passwords do not match";
+    registerButton.disabled = false;
+    return;
+  }
+  if (registerEmail === "" || registerPassword ==="" || registerFirst ==="" || registerLast===""){
+    document.getElementById("registerMessage").innerHTML = "all field are required";
+    registerButton.disabled = false;
+    return;
+  }
+
+  var registerCallback = function(err, data) {
+    if (err) {
+      registerButton.disabled=false;
+      document.getElementById("registerMessage").innerHTML = data;
+    } else{
+
+
+      login(registerEmail, registerPassword, function(err, data) {
+        if(err) {
+          alert(JSON.stringify(data));
+        } else {
+          var user = cb.User();
+          user.setUser({"firstname":registerFirst,"lastname":registerLast}, function(err, data){
+            if(err) {
+              alert("Unable to save user info; " + JSON.stringify(data));
+            } else {
+              showView("chat");
+              registerButton.disabled=false;
+            }
+          });
+        }
+
+      });
+
+    }
+
+  };
+
+  cb.registerUser(registerEmail, registerPassword, registerCallback);
+
+};
+
 var createGroup = function(name) {
 
 }
@@ -302,59 +355,6 @@ var fetchGroups = function() {
     }
   });
 }
-
-var register = function(userName) {
-  var registerButton = document.getElementById("registerButton");
-  registerButton.disabled=true;
-
-  //first add the user to the System
-  registerEmail = document.getElementById("registerEmail").value;
-  registerPassword = document.getElementById("registerPass1").value;
-  registerConfirm = document.getElementById("registerPass2").value;
-  registerFirst = document.getElementById("registerFirst").value;
-  registerLast = document.getElementById("registerLast").value;
-  if (registerPassword != registerConfirm) {
-    document.getElementById("registerMessage").innerHTML = "passwords do not match";
-    registerButton.disabled = false;
-    return;
-  }
-  if (registerEmail === "" || registerPassword ==="" || registerFirst ==="" || registerLast===""){
-    document.getElementById("registerMessage").innerHTML = "all field are required";
-    registerButton.disabled = false;
-    return;
-  }
-
-  var registerCallback = function(err, data) {
-    if (err) {
-      registerButton.disabled=false;
-      document.getElementById("registerMessage").innerHTML = data;
-    } else{
-
-
-      login(registerEmail, registerPassword, function(err, data) {
-        if(err) {
-          alert(JSON.stringify(data));
-        } else {
-          var user = cb.User();
-          user.setUser({"firstname":registerFirst,"lastname":registerLast}, function(err, data){
-            if(err) {
-              alert("Unable to save user info; " + JSON.stringify(data));
-            } else {
-              showView("chat");
-              registerButton.disabled=false;
-            }
-          });
-        }
-
-      });
-
-    }
-
-  };
-
-  cb.registerUser(registerEmail, registerPassword, registerCallback);
-
-};
 
 var refreshGroups = true;
 
