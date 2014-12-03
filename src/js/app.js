@@ -296,17 +296,7 @@ var onMessageArrived=function(message, sendDate) {
 
 
 var getMessageHistory = function(groupId) {
-  var messageHistoryCb = function(err, body) {
-    if(err) {
-      alert("Unable to retrieve message history for " + currentGroup.data.name + "; " + JSON.stringify(body));
-    } else {
-      for(var i=body.length-1; i>-1; i--) {
-        onMessageArrived(body[i].message, body[i]["send-date"]);
-      }
-    }
-  }
 
-  messaging.getMessageHistory(groupId, new Date().getTime(), 25, messageHistoryCb);
 }
 
 var loadUserInfo = function() {
