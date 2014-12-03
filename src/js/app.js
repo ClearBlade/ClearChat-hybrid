@@ -161,6 +161,10 @@ var login = function(userEmail, userPassword, callback) {
   cb.loginUser(userEmail, userPassword, _cb);
 }
 
+var register = function() {
+
+}
+
 var createGroup = function(name) {
 
 }
